@@ -7,9 +7,9 @@ const Layout = () => {
   return (
     <Stack>
       <Stack.Screen name="index" />   
-      {/* <Stack.Screen name='(app1)'/>
-      <Stack.Screen name='(app2)'/> */}
-      <Stack.Screen name='(app3)'/>
+      <Stack.Screen name='(app1)'/>
+      <Stack.Screen name='(app2)'/>
+      <Stack.Screen name='(app3)' options={{headerShown : false}}/>
     </Stack>
   );
 }
