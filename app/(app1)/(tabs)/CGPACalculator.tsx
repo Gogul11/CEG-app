@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import data from '../assets/data.json';
@@ -342,7 +342,7 @@ const CGPACalculator = () => {
             </Picker>
           </View>
           <TouchableOpacity onPress={() => deleteCourse(course.id)} style={styles.deleteIcon}>
-            {/* <Icon name="delete" size={30} color="red" /> */}
+            <Icon name="delete" size={30} color="red" />
           </TouchableOpacity>
         </View>
       ))}
