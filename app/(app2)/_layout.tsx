@@ -1,14 +1,10 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import AppNavigator from "./navigation/AppNavigator";
+import { AuthProvider } from "./utils/AuthContext";
 
-const Layout = () => {
-    return (
-        <View>
-            
-        </View>
-    );
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <AppNavigator />
+  </AuthProvider>
+  );
 }
-
-const styles = StyleSheet.create({})
-
-export default Layout;

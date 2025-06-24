@@ -7,9 +7,6 @@ const Index = () => {
 
     return (
         <View className='flex gap-2 justify-center m-4'>
-            <Text
-                className='text-blue-500'
-            >this is gogul</Text>
             <Button
                 onPress={() => router.push('(app1)')}
                 title="app1"
