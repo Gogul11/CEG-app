@@ -1,12 +1,19 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Button, Text, SafeAreaView } from 'react-native';
+import { useBackStore } from '../backStore';
 
 const Index = () => {
     const router = useRouter();
 
+    const setBack = useBackStore((state) => state.setBack)
+
+    useEffect(() => {
+        setBack(true)
+    }, [])
+
     return (
-        <View className='flex gap-2 justify-center m-4'>
+        <SafeAreaView className='flex gap-2 justify-center m-4'>
             <Button
                 onPress={() => router.push('(app1)')}
                 title="app1"
@@ -19,7 +26,7 @@ const Index = () => {
                 onPress={() => router.push('(app3)')}
                 title="app3"
             />
-        </View>
+        </SafeAreaView>
     );
 };
 

@@ -246,3 +246,17 @@ const Profile = () => {
 };
 
 export default Profile;
+
+
+// import { useRouter } from 'expo-router';
+// import React from 'react';
+// import { StyleSheet, View } from 'react-native';
+
+// const Profile = () => {
+//   const r = useRouter()
+//   return r.back()
+// }
+
+// const styles = StyleSheet.create({})
+
+// export default Profile;
