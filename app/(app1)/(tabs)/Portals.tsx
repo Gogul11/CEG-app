@@ -5,27 +5,27 @@ const portalsData = [
   {
     title: "Main Portal",
     url: "https://www.annauniv.edu",
-    image: require("../assets/images/aulogo.png"),
+    image: require("../../../assets/app1/images/aulogo.png"),
   },
   {
     title: "AU SEMS",
     url: "https://acoe.annauniv.edu/sems",
-    image: require("../assets/images/aukdc_logo.png"),
+    image: require("../../../assets/app1/images/aukdc_logo.png"),
   },
   {
     title: "Academic Connect",
     url: "https://www.auegov.ac.in/AcademicConnect",
-    image: require("../assets/images/sems_logo.png"),
+    image: require("../../../assets/app1/images/sems_logo.png"),
   },
   {
     title: "FACULTY H-INDEX",
     url: "https://annauniv.irins.org",
-    image: require("../assets/images/h-index.png"),
+    image: require("../../../assets/app1/images/h-index.png"),
   },
   {
     title: "VRL/JLAB",
     url: "http://vrl.annauniv.edu:8000",
-    image: require("../assets/images/jupyterlab.png"),
+    image: require("../../../assets/app1/images/jupyterlab.png"),
   },
 ];
 

@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import data from '../assets/data.json';
+import data from '../../../assets/app1/data.json';
 import * as DocumentPicker from 'expo-document-picker';
 
 const CGPACalculator = () => {

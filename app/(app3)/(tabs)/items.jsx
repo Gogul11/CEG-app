@@ -10,15 +10,15 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import images from '../constants';
+import images from '../../../constants/index';
 import axios from 'axios';
-import env from '../env';
+import env from '../../env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SearchIcon from '../components/search';
+import SearchIcon from '../../../components/app3/search';
 import { useFocusEffect } from 'expo-router';
-import PlusButton from '../components/plusButton'
+import PlusButton from '../../../components/app3/plusButton'
 import { router } from 'expo-router';
-import Navbar from '../components/navbar';
+import Navbar from '../../../components/app3/navbar';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const Home = () => {

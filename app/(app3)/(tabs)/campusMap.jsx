@@ -1,11 +1,11 @@
 import { View, Text, ScrollView, Linking , Image } from 'react-native'
 import React, { useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import images from '../constants'
+import images from '../../../constants/index'
 import { Link, useFocusEffect } from 'expo-router'
 import { useState, useEffect } from 'react'
-import LocationIcon from '../components/location'
-import Navbar from '../components/navbar'
+import LocationIcon from '../../../components/app3/location'
+import Navbar from '../../../components/app3/navbar'
 
 
 const Place = (props) => {

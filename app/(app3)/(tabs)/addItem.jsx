@@ -10,9 +10,9 @@ import * as ImagePicker from 'expo-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import Navbar from '../components/navbar';
-import env from "../env";
-import SlideUpMessage from '../components/successMessage'
+import Navbar from '../../../components/app3/navbar';
+import env from "../../env";
+import SlideUpMessage from '../../../components/app3/successMessage'
 
 const AddMarkString = ({sMark, onDel}) => {
 	return(

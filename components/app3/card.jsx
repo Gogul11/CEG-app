@@ -36,9 +36,9 @@ const AnimatedCard = () => {
 
   return (
     <ScrollView className="flex-1" contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}>
-      <Animated.View className="w-[200px] h-[150px] bg-[#A7E0FC] flex justify-center items-center rounded-[20px]" style={animatedStyle}>
+      <Animated.View className="w-[200px] h-[150px] bg-[#372aac] flex justify-center items-center rounded-[20px]" style={animatedStyle}>
         <TouchableOpacity className="flex-1 justify-center" onPress={() => router.push(urls[index])}>
-          <Text className="text-[20px] font-bold text-black">{texts[index]}</Text>
+          <Text className="text-[20px] font-bold text-white">{texts[index]}</Text>
         </TouchableOpacity>
       </Animated.View>
     </ScrollView>

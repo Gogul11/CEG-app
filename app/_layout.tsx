@@ -5,12 +5,14 @@ import '../global.css'
 
 const Layout = () => {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{headerShown : false}}/>   
-      <Stack.Screen name='(app1)' />
-      <Stack.Screen name='(app2)'/>
-      <Stack.Screen name='(tab3)'/>
-    </Stack>
+      <Stack>
+        <Stack.Screen name="index" options={{headerShown : false}}/>   
+        <Stack.Screen name='(app1)' options={{headerShown : false}}/>
+        <Stack.Screen name='(app2)'/>
+        <Stack.Screen name='(app3)/(tabs)' options={{headerShown : false}}/>
+        <Stack.Screen name='(auth)' options={{headerShown : false}}/>
+        <Stack.Screen name='profile' />
+      </Stack>
   );
 }
 

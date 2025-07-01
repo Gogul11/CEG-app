@@ -3,8 +3,8 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SubjectCard from './SubjectCard';
-import data from '../assets/data.json'; // Adjust the path as needed
+import SubjectCard from '../../../components/app1/SubjectCard';
+import data from '../../../assets/app1/data.json'; // Adjust the path as needed
 
 const AttendanceScreen = () => {
   const route = useRoute();

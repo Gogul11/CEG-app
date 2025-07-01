@@ -49,19 +49,19 @@ const SignUp = () => {
 		}
 	}
 
-	const Textstyle = 'text-[18px] my-2 text-black font-pmedium'
-	const InputStyle = 'bg-white h-[45px] w-[300px] border-[1px] border-quaternary rounded-[10px] pl-4'
+	const Textstyle = 'text-[16px] my-2 text-[#898989] font-pmedium'
+	const InputStyle = 'bg-[#cbcbcb]/30 h-[40px] w-[300px] border-[1px] border-[#898989] rounded-[10px] pl-4'
 
 	return (
-		<SafeAreaView className='flex-1 flex-row justify-center items-center bg-tertiary'>
-		<ScrollView contentContainerStyle={{flexGrow:1}} className='flex'>
+		<ScrollView contentContainerStyle={{flexGrow:1}}>
+		<SafeAreaView className='flex-1 flex-row justify-center items-center bg-white'>
 			<View className='flex-1 flex-col justify-center items-center'>
 
-				<Text className='text-primary font-psemibold text-[25px]'>
+				<Text className='text-black font-psemibold text-[25px]'>
 					SIGN UP
 				</Text>
 
-				<View className='mt-[50px]'>
+				<View className=''>
 					<View>
 						<Text className={Textstyle}>Email Id : </Text>
 						<Controller
@@ -127,7 +127,7 @@ const SignUp = () => {
 								/>
 							)}
 						/>
-						<TouchableOpacity
+						{/* <TouchableOpacity
 							onPress={() => setShow(!show)}
 							className='relative left-[270px] bottom-[32px]'
 						>
@@ -135,7 +135,7 @@ const SignUp = () => {
 								name={show ? 'eye-off' : 'eye'}
 								size={20}
 							/>
-						</TouchableOpacity>
+						</TouchableOpacity> */}
 						{errors.password && (
 							<Text className='text-red-500 font-light m-2'>{errors.password.message}</Text>
 						)}
@@ -154,7 +154,7 @@ const SignUp = () => {
 								/>
 							)}
 						/>
-						<TouchableOpacity
+						{/* <TouchableOpacity
 							onPress={() => setShow1(!show1)}
 							className='relative left-[270px] bottom-[32px]'
 						>
@@ -162,33 +162,33 @@ const SignUp = () => {
 								name={show1 ? 'eye-off' : 'eye'}
 								size={20}
 							/>
-						</TouchableOpacity>
+						</TouchableOpacity> */}
 						{errors.cpassword && (
 							<Text className='text-red-500 font-light m-2'>{errors.cpassword.message}</Text>
 						)}
 					</View>
 					<View className='flex mt-7 flex-row justify-center items-center'>
 						<TouchableOpacity
-							className='bg-primary h-[40px] w-[300px] justify-center rounded-[10px]'
+							className='bg-[#898989] h-[40px] w-[300px] justify-center rounded-[10px]'
 							onPress={handleSubmit(onSignUp)}
 						>
-							<Text className='text-center text-white'>Sign Up</Text>
+							<Text className='text-center text-xl text-black'>Sign Up</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
 
 				<View>
-					<Text className='font-psemibold text-[20px] m-[30px] text-black'>
+					<Text className='font-psemibold text-[16px] m-[30px] text-black'>
 						Already Signed In ? {'\t\t'}
 						<Link 
 							href='/sign-in'
-							className='text-[#A7E0FC] '
+							className='text-[#898989] '
 						>Sign In</Link>
 					</Text>
 				</View>
 			</View>
-		</ScrollView>
 		</SafeAreaView>
+		</ScrollView>
 	)
 }
 
