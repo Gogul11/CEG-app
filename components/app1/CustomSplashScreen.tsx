@@ -42,7 +42,7 @@ const CustomSplashScreen = () => {
       <StatusBar hidden />
       <Animated.View style={[styles.imageContainer, animatedStyle]}>
         <Image
-          source={require('../assets/images/CEGSYNC.png')}
+          source={require('./assets/images/CEGSYNC.png')}
           style={styles.image}
           resizeMode="contain"
         />

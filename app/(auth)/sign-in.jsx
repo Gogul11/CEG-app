@@ -60,23 +60,23 @@ const SignIn = () => {
   const[show, setShow] = useState(false)
 
   return (
-    <SafeAreaView className="bg-tertiary h-full">
+    <SafeAreaView className="bg-white h-full">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-tertiary p-4">
         <View className="min-h-[85vh] flex flex-col justify-center">
           <View className="flex items-center">
-            <Text className="text-2xl font-pbold text-primary">Sign In</Text>
+            <Text className="text-2xl text-black font-pbold text-primary">Sign In</Text>
           </View>
 
           <View className="flex items-center mt-8">
 
             <View className="mt-4">
-              <Text className="text-lg font-psemibold text-secondary">Email</Text>
+              <Text className="text-lg text-[#898989] font-psemibold text-secondary">Email</Text>
               <Controller
                 name="email_id"
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    className="w-[300px] h-12 border-2 border-secondary rounded-xl pl-4 mt-2 bg-white"
+                    className="w-[300px] h-12 border-2 border-[#898989] rounded-xl pl-4 mt-2 bg-[#cbcbcb]/30"
                     placeholder="Enter your email"
                     placeholderTextColor="black"
                     onBlur={onBlur}
@@ -89,13 +89,13 @@ const SignIn = () => {
             </View>
 
             <View className="mt-4">
-              <Text className="text-lg font-psemibold text-secondary">Password</Text>
+              <Text className="text-lg text-[#898989] font-psemibold ">Password</Text>
               <Controller
                 name="password"
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    className="w-[300px] h-12 border-2 border-secondary rounded-xl pl-4 mt-2 bg-white"
+                    className="w-[300px] h-12 border-2 border-[#898989] rounded-xl pl-4 mt-2 bg-[#cbcbcb]/30"
                     placeholder="Enter your password"
                     placeholderTextColor="black"
 									  secureTextEntry={show}
@@ -126,14 +126,14 @@ const SignIn = () => {
 
           <View className="flex items-center mt-8">
             <TouchableOpacity
-              className="w-[300px] h-10 flex items-center justify-center rounded-md bg-primary"
+              className="w-[300px] h-10 flex items-center justify-center rounded-md bg-[#cbcbcb]"
               onPress={handleSubmit(onSubmit)}
               disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <ActivityIndicator size="small" color="#fff" />
               ) : (
-                <Text className="text-lg font-psemibold text-tertiary">Sign In</Text>
+                <Text className="text-lg font-psemibold text-black text-tertiary">Sign In</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -144,10 +144,10 @@ const SignIn = () => {
 
           <View className="flex items-center mt-2">
             <TouchableOpacity
-              className="w-[300px] h-10 flex items-center justify-center rounded-md bg-quaternary"
+              className="w-[300px] h-10 flex items-center justify-center rounded-md bg-[#cbcbcb]"
               onPress={() => router.push('/sign-up')}
             >
-              <Text className="text-lg font-psemibold text-tertiary">Sign Up</Text>
+              <Text className="text-lg font-psemibold text-tertiary text-black">Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>

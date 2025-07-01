@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { router } from "expo-router";
 import env from "../env";
-import SlideUpMessage from '../components/successMessage'
+import SlideUpMessage from '../../components/app3/successMessage'
 
 export default function OTPVerification() {
 	const [otpVisible, setOtpVisible] = useState(false);
@@ -96,17 +96,17 @@ export default function OTPVerification() {
 	const[success, setSuccess] = useState(false)
 
 return (
-	<SafeAreaView className='flex-1 bg-tertiary flex-row justify-center items-center'>
+	<SafeAreaView className='flex-1 bg-white flex-row justify-center items-center'>
 		<ScrollView contentContainerStyle={{ flexGrow: 1 }} className='flex'>
 			<View className='flex-1 flex-col p-4 items-center justify-center'>
 				<View className="mt-5 w-full px-6">
-					<Text className="text-[18px] text-quaternary font-medium">Enter Email</Text>
+					<Text className="text-[18px] text-[#898989] font-medium">Enter Email</Text>
 					<Controller
 					control={control}
 					name="email"
 					render={({ field: { onChange, value } }) => (
 						<TextInput
-						className="bg-white h-[50px] w-full border-[1px] border-gray-400 rounded-[10px] p-3 mt-2"
+						className="bg-[#cbcbcb]/30 h-[50px] w-full border-[1px] border-[#898989] rounded-[10px] p-3 mt-2"
 						placeholder="Enter your email"
 						keyboardType="email-address"
 						autoCapitalize="none"
@@ -119,56 +119,56 @@ return (
 
 					{!otpVisible && (
 					<TouchableOpacity
-						className="bg-primary h-[40px] w-full rounded-[10px] justify-center mt-5"
+						className="bg-[#898989] h-[40px] w-full rounded-[10px] justify-center mt-5"
 						onPress={handleSubmit(handleSendOTP)}
 					>
-						<Text className="text-white text-center">Send OTP</Text>
+						<Text className="text-center">Send OTP</Text>
 					</TouchableOpacity>
 					)}
 			</View>
 
 				<View>
-					{otpVisible && (
+					{!otpVisible && (
 						<View
 							className='items-center'
 						>
-						<Text
-							className='text-[22px] text-quaternary font-psemibold my-4'
-						>Enter OTP</Text>
-						<View className='flex flex-row justify-between gap-4 w-full px-6'>
-            {otp.map((digit, index) => (
-              <TextInput
-                key={index}
-                ref={otpRefs[index]}
-                className='h-12 w-[13%] rounded-lg bg-white text-center text-quaternary border-secondary border-2 font-bold text-[18px]'
-                keyboardType="numeric"
-                maxLength={1}
-                value={digit}
-                onChangeText={(text) => handleOTPChange(text, index)}
-              />
-            ))}
-          </View>
+							<Text
+								className='text-[20px] text-[#898989] font-psemibold my-4'
+							>Enter OTP</Text>
+							<View className='flex flex-row justify-between gap-4 w-full px-6'>
+								{otp.map((digit, index) => (
+								<TextInput
+									key={index}
+									ref={otpRefs[index]}
+									className='h-14 w-[13%] rounded-lg bg-[#cbcbcb]/30 text-center text-quaternary border-[#898989] border-2 font-bold text-[18px]'
+									keyboardType="numeric"
+									maxLength={1}
+									value={digit}
+									onChangeText={(text) => handleOTPChange(text, index)}
+								/>
+								))}
+							</View>
 
 							{otpErr && (
 								<Text className='text-red-600 my-4'>{otpErr}</Text>
 							)}
-						<TouchableOpacity
-							className='h-[50px] w-[140px] bg-primary rounded-[10px] justify-center mt-[50px]'
-							onPress={handleVerifyOTP}
-						>
-							<Text
-								className='text-center text-white text-[18px] '
-							>Verify OTP</Text>
-						</TouchableOpacity>
+							<TouchableOpacity
+								className='h-[40px] w-[140px] bg-[#898989] rounded-[10px] justify-center mt-[50px]'
+								onPress={handleVerifyOTP}
+							>
+								<Text
+									className='text-center text-black text-[16px] '
+								>Verify OTP</Text>
+							</TouchableOpacity>
 
-						<TouchableOpacity
-							className='h-[50px] w-[140px] bg-primary rounded-[10px] justify-center mt-[50px]'
-							onPress={() => setOtpVisible(false)}
-						>
-							<Text
-								className='text-center text-white text-[18px] '
-							>Resend OTP</Text>
-						</TouchableOpacity>
+							<TouchableOpacity
+								className='h-[40px] w-[140px] bg-[#898989] rounded-[10px] justify-center mt-[50px]'
+								onPress={() => setOtpVisible(false)}
+							>
+								<Text
+									className='text-center text-black text-[16px] '
+								>Resend OTP</Text>
+							</TouchableOpacity>
 						</View>
 					)}
 				</View>

@@ -3,7 +3,7 @@ import React from 'react'
 import { Tabs } from 'expo-router'
 import Feather from '@expo/vector-icons/Feather';
 import { LinearGradient } from 'expo-linear-gradient';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 
@@ -11,8 +11,8 @@ const TabsLayout = () => {
   return (
     <Tabs 
     screenOptions={{
-        tabBarActiveTintColor: '#fff',
-        tabBarInactiveTintColor: '#1a1a1a',
+        tabBarActiveTintColor: '#000',
+        tabBarInactiveTintColor: '#000',
         tabBarStyle: {
           borderTopWidth: 0,
           height : 55,
@@ -22,12 +22,19 @@ const TabsLayout = () => {
         },
         tabBarBackground: () => (
           <LinearGradient
-            colors={['#bae6fd', '#38bdf8']} // Define your gradient colors
+            colors={['#CBCBCB', '#898989']} // Define your gradient colors
             style={{ flex: 1 }}
           />
         ),
         headerShown: false,
       }}>
+        <Tabs.Screen name='back' options={{
+            headerShown : false,
+            title:'Back',
+            tabBarIcon :({focused}) => (
+              <Ionicons name="arrow-back-outline" size={24} color={focused ? "white" : "#000"} />
+            )
+        }}/>
         <Tabs.Screen name="index" options={{
             headerShown : false,
             title : 'Home',
@@ -50,13 +57,6 @@ const TabsLayout = () => {
             title : 'Map',
             tabBarIcon:({focused}) => (
                 <Feather name="map-pin" size={24} color={focused ? "white" : "#000"} />
-            )
-        }}/>
-        <Tabs.Screen name='profile' options={{
-            headerShown : false,
-            title:'Profile',
-            tabBarIcon :({focused}) => (
-              <FontAwesome6 name="user-secret" size={24} color={focused ? "white" : "#000"} />
             )
         }}/>
     </Tabs>

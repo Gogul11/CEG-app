@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StatusBar } from 'expo-status-bar'
 import { Link } from 'expo-router'
-import Navbar from '../components/navbar'
-import AnimatedCard from '../components/card'
+import Navbar from '../../../components/app3/navbar'
+import AnimatedCard from '../../../components/app3/card'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
@@ -51,33 +51,33 @@ const Default = () => {
     }
 
 return (
-    <SafeAreaView className='flex-1 bg-tertiary'>
+    <SafeAreaView className='flex-1 bg-white'>
         <StatusBar style='dark'/>
         <ScrollView contentContainerStyle={{flexGrow : 1}} className='flex'>
-            <Navbar/>
+            {/* <Navbar/> */}
            
             <View className='flex-1 flex-col justify-end items-center m-5 gap-5'>
                 <Text
-                    className='text-[30px] font-pbold text-quaternary'
+                    className='text-[30px] font-pbold text-[#898989]'
                 >College of {'\n'}Engineering Guindy</Text>
 
                 <View className='flex-1 flex-row justify-center items-center'>
-                    <AnimatedCard/>
+                    {/* <AnimatedCard/> */}
                 </View>
 
                 
                 {!log && (
                         <View className='flex flex-col gap-[20px] '>
                             <View>
-                                <TouchableOpacity className='h-[40px] w-[250px] bg-primary flex flex-col justify-center rounded-[10px]'>
-                                    <Link className='text-white text-center' href='/sign-in'>
+                                <TouchableOpacity className='h-[40px] w-[250px] bg-[#cbcbcb] flex flex-col justify-center rounded-[10px]'>
+                                    <Link className='text-black text-center' href='/sign-in'>
                                         SIGN IN
                                     </Link>
                                 </TouchableOpacity>
                             </View>
                             <View>
-                                <TouchableOpacity className='h-[40px] w-[250px] bg-primary flex flex-col justify-center rounded-[10px]'>
-                                    <Link className='text-white text-center' href='/sign-up'>
+                                <TouchableOpacity className='h-[40px] w-[250px] bg-[#cbcbcb] flex flex-col justify-center rounded-[10px]'>
+                                    <Link className='text-black text-center' href='/sign-up'>
                                         SIGN UP
                                     </Link>
                                 </TouchableOpacity>
@@ -87,44 +87,31 @@ return (
 
                 
                     <View className='flex flex-col justify-center items-center my-[20px]'>
-                        <Text className='text-[20px] font-pmedium '>About</Text>
+                        <Text className='text-[20px] text-[#898989] font-pmedium '>About</Text>
                         <TouchableOpacity
                             onPress={() => setAbout(!about)}
                         >
-                            <AntDesign name={about ? "caretup" : "caretdown"} size={24} color="black" />
+                            <AntDesign name={about ? "caretup" : "caretdown"} size={24} color="#898989" />
                         </TouchableOpacity>
                         {about &&
-                            <LinearGradient
-                            colors={['#fff', "#A7E0FC"]}
-                            start={{x : 0, y:0}}
-                            end={{x : 0, y : 1}}
-                            className='w-full'
-                            >
-                                <Text className='text-[17px] font-pmedium ml-3'>
+                                <Text className='text-[17px] text-black font-pmedium ml-3'>
                                     The  App simplifies campus life with two key features: Lost and Found, 
                                     where users can report or reclaim lost items, and Campus Map, which helps navigate important locations. 
                                     Designed for convenience, it enhances accessibility and connectivity for students and faculty.
                                 </Text>
-                            </LinearGradient>
                         }
                     </View>
 
                     <View className='flex flex-col justify-center items-center my-[20px] '>
-                        <Text className='text-[20px] font-pmedium'>Who are We ?</Text>
+                        <Text className='text-[20px] text-[#898989] font-pmedium'>Who are We ?</Text>
 
                         <TouchableOpacity
                             onPress={() => setAbout2(!about2)}
                         >
-                            <AntDesign name={about2 ? "caretup" : "caretdown"} size={24} color="black" />
+                            <AntDesign name={about2 ? "caretup" : "caretdown"} size={24} color="#898989" />
                         </TouchableOpacity>
                         {about2 &&
-                            <LinearGradient
-                                colors={['#fff', "#A7E0FC"]}
-                                start={{x : 0, y:0}}
-                                end={{x : 0, y : 1}}
-                                className='w-full'
-                            >
-                                <Text className='text-[17px] m-3 font-pmedium'>
+                                <Text className='text-[17px] text-black m-3 font-pmedium'>
                                     We are the Technical Team of 
                                         <Link 
                                             href='https://www.projects.cegtechforum.in/'
@@ -136,7 +123,6 @@ return (
                                     Our mission is to leverage technology for the betterment of our college community, making a meaningful impact 
                                     through practical and efficient digital solutions.
                                 </Text>
-                            </LinearGradient>
                         }
                        
                     </View>
