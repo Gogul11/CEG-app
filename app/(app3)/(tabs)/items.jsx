@@ -91,6 +91,7 @@ const Home = () => {
         <View className="h-9 bg-tertiary mb-1" />
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-tertiary flex" showsVerticalScrollIndicator={false}>
           <Navbar/>
+          <Text>Hello Sample commit</Text>
           <TouchableWithoutFeedback onPress={() => textInputRef.current?.focus()}>
             <View className="flex flex-row bg-white w-[320px] h-12 rounded-lg px-2 mt-4 mb-4 ml-4 items-center justify-between border-secondary border-2">
               <TextInput
