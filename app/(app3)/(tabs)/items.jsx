@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect,useCallback  } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,33 +8,66 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   ScrollView,
+  Modal,
+  Linking,
+  Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import images from '../../../constants/index';
-import axios from 'axios';
-import env from '../../env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import SearchIcon from '../../../components/app3/search';
 import { useFocusEffect } from 'expo-router';
-import PlusButton from '../../../components/app3/plusButton'
-import { router } from 'expo-router';
+import SearchIcon from '../../../components/app3/search';
 import Navbar from '../../../components/app3/navbar';
 import { LinearGradient } from 'expo-linear-gradient';
+import images from '../../../constants/index';
+import Civil from '../../../assets/app3/images/Civil.png';
 
-const Home = () => {
-  const API_URL = env.API_URL;
-  const navigation = useNavigation();
+const dummyItems = [
+  {
+    item_id: 1,
+    item_name: 'Black Wallet',
+    reason: 'Lost',
+    location: 'Library',
+    image: Civil,
+    created_at: '2025-07-01',
+    description: 'Leather wallet with cards and cash inside',
+    user_name: 'John Doe',
+    contact_number: '9025298471',
+    special_marks: 'Red stitching on one side',
+  },
+  {
+    item_id: 2,
+    item_name: 'White Umbrella',
+    reason: 'Found',
+    location: 'Cafeteria',
+    image: Civil,
+    created_at: '2025-07-01',
+    description: 'Plastic white umbrella with blue dots',
+    user_name: 'Jane Smith',
+    contact_number: '919812345678',
+    special_marks: 'Bent metal tip',
+  },
+  {
+    item_id: 3,
+    item_name: 'Green Backpack',
+    reason: 'Found',
+    location: 'Library',
+    image: Civil,
+    created_at: '2025-07-02',
+    description: 'Green backpack with multiple compartments',
+    user_name: 'Jane Smith',
+    contact_number: '919812345678',
+    special_marks: 'Bent metal tip',
+  },
+];
+
+const ItemsPage = () => {
   const [searchItem, setSearchItem] = useState('');
   const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [load, setLoad] = useState(false);
   const textInputRef = useRef(null);
 
   const getItems = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/lost-and-found/items`);
-      setItems(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+    setItems(dummyItems);
   };
 
   useFocusEffect(
@@ -43,12 +76,17 @@ const Home = () => {
     }, [])
   );
 
+  useEffect(() => {
+    setLoad(false);
+    const timer = setTimeout(() => setLoad(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const formatDateKey = (dateString) => {
     const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(
+      date.getDate()
+    ).padStart(2, '0')}`;
   };
 
   const formatDisplayDate = (dateKey) => {
@@ -62,97 +100,169 @@ const Home = () => {
 
   const groupedItems = filteredItems.reduce((acc, item) => {
     const dateKey = formatDateKey(item.created_at);
-    if (!acc[dateKey]) {
-      acc[dateKey] = [];
-    }
+    if (!acc[dateKey]) acc[dateKey] = [];
     acc[dateKey].push(item);
     return acc;
   }, {});
 
-  const sortedDateKeys = Object.keys(groupedItems).sort((a, b) =>
-    b.localeCompare(a)
-  );
+  const sortedDateKeys = Object.keys(groupedItems).sort((a, b) => b.localeCompare(a));
 
-  const[load, setLoad] = useState(false)
+  const openWhatsApp = (phoneNumber) => {
+    const cleanNumber = phoneNumber.replace(/\D/g, '');
+    const url = `whatsapp://send?phone=${cleanNumber}`;
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (supported) Linking.openURL(url);
+        else Alert.alert('Error', 'WhatsApp is not installed.');
+      })
+      .catch((err) => console.error(err));
+  };
 
- useEffect(() => {
-      setLoad(false)
-      const timer = setTimeout(() => setLoad(true), 3000)
-
-      return () => clearTimeout(timer)
-    
-  }, [])
-
+  const callNumber = (phoneNumber) => {
+    const url = `tel:${phoneNumber}`;
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (supported) Linking.openURL(url);
+        else Alert.alert('Error', 'Call is not supported.');
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
-    <SafeAreaView className="bg-tertiary h-screen">
-      {load ?
-      <View className='flex-1 mb-4'>
-        <View className="h-9 bg-tertiary mb-1" />
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-tertiary flex" showsVerticalScrollIndicator={false}>
-          <Navbar/>
-          <Text>Hello Sample commit</Text>
-          <TouchableWithoutFeedback onPress={() => textInputRef.current?.focus()}>
-            <View className="flex flex-row bg-white w-[320px] h-12 rounded-lg px-2 mt-4 mb-4 ml-4 items-center justify-between border-secondary border-2">
-              <TextInput
-                ref={textInputRef}
-                onChangeText={(text) => setSearchItem(text)}
-                placeholder="Search for an item"
-                placeholderTextColor="black"
-                className="flex-1"
-              />
-              <Image source={images.search} className="w-8 h-8 ml-2" />
-            </View>
-          </TouchableWithoutFeedback>
-          {sortedDateKeys.map((dateKey) => (
-            <View key={dateKey} className="mb-6 ml-4">
-              <Text className="text-xl font-pbold text-primary mb-4">
-                {formatDisplayDate(dateKey)}
-              </Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {groupedItems[dateKey].map((item) => (
-                  <TouchableOpacity
-                  key={item.item_id}
-                  onPress={() => navigation.navigate('itemDescription', { itemDetails: item })}
-                  activeOpacity={0.9}
-                  className="mr-4 shadow-lg"
-                  style={{ borderRadius: 16, overflow: 'hidden' }}
-                >
-                  <LinearGradient
-                    colors={['#bae6fd', '#38bdf8']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    className="w-64 p-2"
-                    style={{ borderRadius: 16 }}
-                  >
-                    <Image
-                      source={{ uri: item.image }}
-                      className="w-full h-48 mb-2"
-                      resizeMode="cover"
-                      style={{ borderRadius: 16 }} 
-                    />
-                    <Text className="text-xl font-psemibold mb-1 text-white">
-                      {item.item_name}
-                    </Text>
-                    <Text
-                      style={{ textTransform: 'capitalize' }}
-                      className="text-m text-white font-pregular"
+    <SafeAreaView className="flex-1 bg-white">
+      {load ? (
+        <View className="flex-1 mb-4">
+          <View className="h-9 bg-white mb-1" />
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+            <Navbar />
+            <TouchableWithoutFeedback onPress={() => textInputRef.current?.focus()}>
+              <View className="flex flex-row w-[320px] h-12 rounded-xl px-2 mt-4 mb-4 ml-4 items-center justify-between border-2 bg-white border-[#cbcbcb]">
+                <TextInput
+                  ref={textInputRef}
+                  onChangeText={(text) => setSearchItem(text)}
+                  placeholder="Search for an item"
+                  placeholderTextColor="#898989"
+                  className="flex-1 text-black"
+                />
+                <Image source={images.search} className="w-8 h-8 ml-2" />
+              </View>
+            </TouchableWithoutFeedback>
+
+            {sortedDateKeys.map((dateKey) => (
+              <View key={dateKey} className="mb-6 ml-4">
+                <Text className="text-xl font-bold text-black mb-4">
+                  {formatDisplayDate(dateKey)}
+                </Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  {groupedItems[dateKey].map((item) => (
+                    <TouchableOpacity
+                      key={item.item_id}
+                      onPress={() => {
+                        setSelectedItem(item);
+                        setModalVisible(true);
+                      }}
+                      activeOpacity={0.9}
+                      className="mr-4 rounded-[16px] overflow-hidden shadow-md"
                     >
-                      {item.reason} Near: {item.location}
-                    </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-                
-                  
-                ))}
+                      <LinearGradient
+                        colors={['#cbcbcb', '#898989']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        className="w-64 p-2 rounded-[16px]"
+                      >
+                        <Image
+                          source={typeof item.image === 'string' ? { uri: item.image } : item.image}
+                          className="w-full h-48 mb-2 rounded-[16px]"
+                          resizeMode="cover"
+                        />
+                        <Text className="text-xl font-semibold mb-1 text-white">{item.item_name}</Text>
+                        <Text className="text-sm text-white capitalize">
+                          {item.reason} Near: {item.location}
+                        </Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            ))}
+
+            <Modal visible={modalVisible} animationType="slide" onRequestClose={() => setModalVisible(false)}>
+              <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="p-4 bg-white">
+                {selectedItem && (
+                  <View className="shadow-lg rounded-xl overflow-hidden mt-[70px]">
+                    <LinearGradient
+                      colors={['#cbcbcb', '#898989', '#cbcbcb']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      className="p-6 rounded-xl"
+                    >
+                      <Image
+                        source={
+                          typeof selectedItem.image === 'string'
+                            ? { uri: selectedItem.image }
+                            : selectedItem.image
+                        }
+                        className="w-full h-64 rounded-xl mb-4"
+                        resizeMode="cover"
+                      />
+
+                      <Text className="text-2xl font-bold text-black mb-4">
+                        {selectedItem.item_name}
+                      </Text>
+
+                      <Text className="text-lg text-black mb-2">
+                        <Text className="font-semibold">Description: </Text>
+                        {selectedItem.description}
+                      </Text>
+
+                      <Text className="text-lg text-black mb-2">
+                        <Text className="font-semibold">Username: </Text>
+                        {selectedItem.user_name}
+                      </Text>
+
+                      <Text className="text-lg text-black mb-2">
+                        <Text className="font-semibold">Contact: </Text>
+                        {selectedItem.contact_number}
+                      </Text>
+
+                      <Text className="text-lg text-black mb-2">
+                        <Text className="font-semibold">Special Marks: </Text>
+                        {selectedItem.special_marks}
+                      </Text>
+
+                      <View className="flex-row justify-between items-center mt-6">
+                        <TouchableOpacity
+                          className="bg-[#cbcbcb] p-4 rounded-full flex-1 mr-2 shadow"
+                          onPress={() => callNumber(selectedItem.contact_number)}
+                        >
+                          <Text className="text-white text-center font-semibold text-lg">📞 Call</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          className="bg-[#898989] p-4 rounded-full flex-1 shadow"
+                          onPress={() => openWhatsApp(selectedItem.contact_number)}
+                        >
+                          <Text className="text-white text-center font-semibold text-lg">💬 WhatsApp</Text>
+                        </TouchableOpacity>
+                      </View>
+
+                      <TouchableOpacity
+                        onPress={() => setModalVisible(false)}
+                        className="mt-6 p-3 bg-black rounded-xl"
+                      >
+                        <Text className="text-white text-center font-semibold">Close</Text>
+                      </TouchableOpacity>
+                    </LinearGradient>
+                  </View>
+                )}
               </ScrollView>
-            </View>
-          ))}
-        </ScrollView>
-       </View>
-      :<SearchIcon/>}
+            </Modal>
+          </ScrollView>
+        </View>
+      ) : (
+        <SearchIcon />
+      )}
     </SafeAreaView>
   );
 };
 
-export default Home;
+export default ItemsPage;
