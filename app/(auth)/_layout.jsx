@@ -1,26 +1,12 @@
-import { StatusBar } from "react-native";
 import React from "react";
-import { Slot, Stack } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-
-// // Custom Linear Gradient Header
-// const GradientHeader = () => (
-//   <LinearGradient
-//     colors={[ '#898989', '#cbcbcb']}
-//     style={{ flex: 1 }}
-//   />
-// );
+import { Stack } from "expo-router";
 
 const AuthLayout = () => {
   return (
     <>
-      {/* <StatusBar barStyle='dark-content' backgroundColor="#fff"  /> */}
-
       <Stack
         screenOptions={{
           headerShown: true,
-          // headerBackground: () => <GradientHeader />, // Gradient for header
-          // headerTintColor: "white",
         }}
       >
         <Stack.Screen index name="sign-in" options={{title : 'Sign In'}}/>
@@ -28,9 +14,6 @@ const AuthLayout = () => {
         <Stack.Screen name="otp-section" options={{title : 'Enter OTP'}}/>
         <Stack.Screen name="forget-password" options={{title : 'Change Password'}}/>
       </Stack>
-
-      {/* Ensure Slot is used correctly for nested routes */}
-      {/* <Slot /> */}
     </>
   );
 };

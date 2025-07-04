@@ -1,32 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, KeyboardAvoidingView, Platform} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { z } from 'zod';
 import axios from 'axios';
 import env from "../env";
-import { Ionicons } from '@expo/vector-icons'
-
-const validationSchema = z.object({
-  email_id: z.string().email('Invalid email address'),
-  password: z
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .max(20, 'Password must not exceed 20 characters'),
-});
+import CustomButton from '../../components/button';
+import { signInValidationSchema } from '../../utils/app3/FormValidation';
+import { Formik } from 'formik';
+import { signInFormInitialValues } from '../../constants/formConstants';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
 
 const SignIn = () => {
   const router = useRouter();
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(validationSchema),
-  });
 
   const API_URL = env.API_URL;
   
@@ -57,101 +42,77 @@ const SignIn = () => {
     }
   };
 
-  const[show, setShow] = useState(false)
-
   return (
-    <SafeAreaView className="bg-white h-full">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-tertiary p-4">
-        <View className="min-h-[85vh] flex flex-col justify-center">
-          <View className="flex items-center">
-            <Text className="text-2xl text-black font-pbold text-primary">Sign In</Text>
-          </View>
-
-          <View className="flex items-center mt-8">
-
-            <View className="mt-4">
-              <Text className="text-lg text-[#898989] font-psemibold text-secondary">Email</Text>
-              <Controller
-                name="email_id"
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    className="w-[300px] h-12 border-2 border-[#898989] rounded-xl pl-4 mt-2 bg-[#cbcbcb]/30"
-                    placeholder="Enter your email"
-                    placeholderTextColor="black"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
-              {errors.email_id && <Text className="text-red-500 mt-1">{errors.email_id.message}</Text>}
-            </View>
-
-            <View className="mt-4">
-              <Text className="text-lg text-[#898989] font-psemibold ">Password</Text>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    className="w-[300px] h-12 border-2 border-[#898989] rounded-xl pl-4 mt-2 bg-[#cbcbcb]/30"
-                    placeholder="Enter your password"
-                    placeholderTextColor="black"
-									  secureTextEntry={show}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
-              <TouchableOpacity
-                            onPress={() => setShow(!show)}
-                            className='relative left-[270px] bottom-[32px]'
-                          >
-                            <Ionicons
-                              name={show ? 'eye-off' : 'eye'}
-                              size={20}
-                            />
-              </TouchableOpacity>
-              {errors.password && <Text className="text-red-500 mt-1">{errors.password.message}</Text>}
-            </View>
-          </View>
-
-          <View className="flex items-center mt-4">
-            <TouchableOpacity onPress={() => router.push('/otp-section')}>
-              <Text className="text-sm text-blue-500">Forgot Password?</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View className="flex items-center mt-8">
-            <TouchableOpacity
-              className="w-[300px] h-10 flex items-center justify-center rounded-md bg-[#cbcbcb]"
-              onPress={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                <Text className="text-lg font-psemibold text-black text-tertiary">Sign In</Text>
-              )}
-            </TouchableOpacity>
-          </View>
-
-          <View className="flex items-center mt-4">
-            <Text className="text-lg font-psemibold text-secondary">Don't have an account?</Text>
-          </View>
-
-          <View className="flex items-center mt-2">
-            <TouchableOpacity
-              className="w-[300px] h-10 flex items-center justify-center rounded-md bg-[#cbcbcb]"
-              onPress={() => router.push('/sign-up')}
-            >
-              <Text className="text-lg font-psemibold text-tertiary text-black">Sign Up</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+    <SafeAreaView className="bg-white h-full flex-1">
+			<KeyboardAvoidingView
+					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+					contentContainerStyle={{flexGrow : 1}}
+			>
+				<View >
+					<Text className="text-2xl text-black font-pbold text-center">Sign In</Text>
+					<View className="flex items-center mt-8">
+				
+						<Formik
+							initialValues={signInFormInitialValues}
+							validationSchema={toFormikValidationSchema(signInValidationSchema)}
+							onSubmit={(values, {resetForm}) => {
+								console.log(values)
+								resetForm()
+							}}
+						>
+						{({handleSubmit, values, handleChange, handleBlur, errors, touched}) => (
+							<View
+								className='flex gap-4 justify-center items-center'
+							>
+								<View>
+									<Text className="text-lg text-[#898989] font-psemibold text-secondary">Email</Text>
+									<TextInput
+										className="w-[300px] h-12 border border-[#898989] rounded-lg pl-4 mt-2 bg-[#cbcbcb]/30"
+										placeholder='Email'
+										value={values.email_id}
+										onChangeText={handleChange('email_id')}
+										onBlur={handleBlur('email_id')}
+									/>
+									{touched.email_id && errors.email_id && <Text className="text-red-500 mt-1">{errors.email_id}</Text>}
+								</View>
+			
+								<View>
+									<Text className="text-lg text-[#898989] font-psemibold ">Password</Text>
+									<TextInput
+										className="w-[300px] h-12 border border-[#898989] rounded-lg pl-4 mt-2 bg-[#cbcbcb]/30"
+										placeholder='Password'
+										value={values.password}
+										onChangeText={handleChange('password')}
+										onBlur={handleBlur('password')}
+									/>
+									{touched.password && errors.password && <Text className="text-red-500 mt-1">{errors.password}</Text>}
+								</View>
+			
+								<CustomButton
+									text='Forgot Password ?'
+									buttonStyle=''
+									textStyle='text-sm text-blue-500'
+									buttonFunction={() => router.push('/otp-section')}
+								/>
+			
+								<CustomButton
+									text='Sign In'
+									buttonFunction={handleSubmit}
+								/>
+							</View>
+						)}
+						</Formik>
+					</View>
+					
+					<View className='flex flex-col items-center gap-4 mt-8'>
+						<Text className="text-lg font-psemibold text-secondary">Don't have an account?</Text>
+						<CustomButton
+							text='Sign Up'
+							buttonFunction={() => router.push('/sign-up')}
+						/>
+					</View>
+				</View>
+			</KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
