@@ -260,7 +260,7 @@ const ItemsPage = () => {
         </View>
       ) : (
         <SearchIcon />
-      )}
+      )}  
     </SafeAreaView>
   );
 };
