@@ -9,29 +9,34 @@ import { Link } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import axios from 'axios';
 import env from "../env";
+import CustomButton from '../../components/button'
+import { Formik } from 'formik'
+import { signUpFormInitialValues } from '../../constants/formConstants'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
+import { signUpValidationschema } from '../../utils/app3/signInValidation'
 const SignUp = () => {
 	const router = useRouter();
-	const[show, setShow] = useState(true)
-	const[show1, setShow1] = useState(true)
+	// const[show, setShow] = useState(true)
+	// const[show1, setShow1] = useState(true)
 
 
-	const signUpschema = z.object({
-		user_name : z.string().min(5, 'User Name must atleast contain 5 characters'),
-		email_id: z.string().email('Invlaid Email'),
-		phone_number : z.string()
-					.length(10, 'Phone number must be exactly 10 characters')
-					.regex(/^\d{10}$/, 'Phone number must contain only digits'),
-		password : z.string().min(8, 'Password Should contain 8 Characters'),
-		cpassword : z.string().min(8, 'Password Should contain 8 Characters')
-	}).refine(data => data.cpassword === data.password, {
-		message:'The Passwords does\'nt match',
-		path:["cpassword"]
-	})
+	// const signUpschema = z.object({
+	// 	user_name : z.string().min(5, 'User Name must atleast contain 5 characters'),
+	// 	email_id: z.string().email('Invlaid Email'),
+	// 	phone_number : z.string()
+	// 				.length(10, 'Phone number must be exactly 10 characters')
+	// 				.regex(/^\d{10}$/, 'Phone number must contain only digits'),
+	// 	password : z.string().min(8, 'Password Should contain 8 Characters'),
+	// 	cpassword : z.string().min(8, 'Password Should contain 8 Characters')
+	// }).refine(data => data.cpassword === data.password, {
+	// 	message:'The Passwords does\'nt match',
+	// 	path:["cpassword"]
+	// })
 
 
-	const{control, handleSubmit, formState:{errors}, reset} = useForm({
-		resolver:zodResolver(signUpschema)
-	})
+	// const{control, handleSubmit, formState:{errors}, reset} = useForm({
+	// 	resolver:zodResolver(signUpschema)
+	// })
 
 	const API_URL = env.API_URL;
 	const onSignUp = async (data) => {
@@ -50,7 +55,7 @@ const SignUp = () => {
 	}
 
 	const Textstyle = 'text-[16px] my-2 text-[#898989] font-pmedium'
-	const InputStyle = 'bg-[#cbcbcb]/30 h-[40px] w-[300px] border-[1px] border-[#898989] rounded-[10px] pl-4'
+	const InputStyle = 'bg-[#cbcbcb]/30 h-[40px] border-[1px] border-[#898989] rounded-[10px] pl-4'
 
 	return (
 		<ScrollView contentContainerStyle={{flexGrow:1}}>
@@ -61,7 +66,78 @@ const SignUp = () => {
 					SIGN UP
 				</Text>
 
-				<View className=''>
+				<View>
+					<Formik
+						initialValues={signUpFormInitialValues}
+						validationSchema={toFormikValidationSchema(signUpValidationschema)}
+						onSubmit={(values) => {
+							console.log(values)
+						}}
+					>
+						{({handleSubmit, values, handleChange}) => (
+							<View>
+								<View>
+									<Text className={Textstyle}>Username : </Text>
+									<TextInput
+										className={InputStyle}
+										value={values.user_name}
+										placeholder='Username'
+										onChangeText={handleChange('user_name')}
+									/>
+								</View>
+
+								<View>
+									<Text className={Textstyle}>Email Id : </Text>
+									<TextInput
+										className={InputStyle}
+										value={values.email_id}
+										placeholder='Email'
+										onChangeText={handleChange('email_id')}
+									/>
+								</View>
+
+								<View>
+									<Text className={Textstyle}>Phone Number : </Text>
+									<TextInput
+										className={InputStyle}
+										value={values.phone_number}
+										placeholder='Phone number'
+										onChangeText={handleChange('email_id')}
+									/>
+								</View>
+
+								<View>
+									<Text className={Textstyle}>Password : </Text>
+									<TextInput
+										className={InputStyle}
+										value={values.password}
+										placeholder='Password'
+										onChangeText={handleChange('password')}
+									/>
+								</View>
+
+								<View>
+									<Text className={Textstyle}>Confirm Password : </Text>
+									<TextInput
+										className={InputStyle}
+										value={values.cpassword}
+										placeholder='Re-type Password'
+										onChangeText={handleChange('cpassword')}
+									/>
+								</View>
+
+								<CustomButton
+									text='Sign Up'
+									buttonFunction={handleSubmit}
+									buttonStyle='bg-[#898989] h-[40px] w-[300px] justify-center rounded-[10px]'
+									textStyle='text-center text-xl text-black'
+								/>
+							</View>
+						)}
+					</Formik>
+				</View>
+
+				{/* <View className=''>
 					<View>
 						<Text className={Textstyle}>Email Id : </Text>
 						<Controller
@@ -127,15 +203,6 @@ const SignUp = () => {
 								/>
 							)}
 						/>
-						{/* <TouchableOpacity
-							onPress={() => setShow(!show)}
-							className='relative left-[270px] bottom-[32px]'
-						>
-							<Ionicons
-								name={show ? 'eye-off' : 'eye'}
-								size={20}
-							/>
-						</TouchableOpacity> */}
 						{errors.password && (
 							<Text className='text-red-500 font-light m-2'>{errors.password.message}</Text>
 						)}
@@ -154,37 +221,28 @@ const SignUp = () => {
 								/>
 							)}
 						/>
-						{/* <TouchableOpacity
-							onPress={() => setShow1(!show1)}
-							className='relative left-[270px] bottom-[32px]'
-						>
-							<Ionicons
-								name={show1 ? 'eye-off' : 'eye'}
-								size={20}
-							/>
-						</TouchableOpacity> */}
 						{errors.cpassword && (
 							<Text className='text-red-500 font-light m-2'>{errors.cpassword.message}</Text>
 						)}
 					</View>
 					<View className='flex mt-7 flex-row justify-center items-center'>
-						<TouchableOpacity
-							className='bg-[#898989] h-[40px] w-[300px] justify-center rounded-[10px]'
-							onPress={handleSubmit(onSignUp)}
-						>
-							<Text className='text-center text-xl text-black'>Sign Up</Text>
-						</TouchableOpacity>
+						<CustomButton
+							text='Sign Up'
+							buttonFunction={handleSubmit(onSignUp)}
+							buttonStyle='bg-[#898989] h-[40px] w-[300px] justify-center rounded-[10px]'
+							textStyle='text-center text-xl text-black'
+						/>
 					</View>
-				</View>
+				</View> */}
 
-				<View>
-					<Text className='font-psemibold text-[16px] m-[30px] text-black'>
-						Already Signed In ? {'\t\t'}
-						<Link 
-							href='/sign-in'
-							className='text-[#898989] '
-						>Sign In</Link>
+				<View className=''>
+					<Text className='font-psemibold text-center mt-4 text-black'>
+						Already Signed In ? {'\n'}
 					</Text>
+					<CustomButton
+						text='Sign In'
+						buttonFunction={() => router.push('/sign-in')}
+					/>
 				</View>
 			</View>
 		</SafeAreaView>
