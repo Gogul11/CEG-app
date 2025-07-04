@@ -10,3 +10,8 @@ export const signUpFormInitialValues = {
     password: '',
     cpassword: ''
 };
+
+export const forgotPasswordInitialValues = {
+    new_password : '',
+    conf_password : '',
+}

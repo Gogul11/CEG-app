@@ -20,3 +20,12 @@ export const signUpValidationschema = z.object({
     message:'The Passwords does\'nt match',
     path:["cpassword"]
 })
+
+
+export const forgotPasswordSchema = z.object({
+    new_password: z.string().min(8, "Password should contain atleast 8 Characters"),
+    conf_password: z.string().min(8, "Password should contain atleast 8 Characters"),
+}).refine(data => data.new_password === data.conf_password, {
+    message: "The passwords doesn't match",
+    path: ['conf_password']
+})

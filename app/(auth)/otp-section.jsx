@@ -3,17 +3,16 @@ import {
 View,
 Text,
 TextInput,
-Alert,
-TouchableOpacity,
 ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {z} from 'zod'
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
 import { router } from "expo-router";
 import env from "../env";
 import SlideUpMessage from '../../components/app3/successMessage'
+import CustomButton from "../../components/button";
+import { Formik } from "formik";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 export default function OTPVerification() {
 	const [otpVisible, setOtpVisible] = useState(false);
@@ -27,10 +26,6 @@ export default function OTPVerification() {
   
 	const emailSchema = z.object({
 	  email: z.string().email("Invalid email address"),
-	});
-  
-	const { control, handleSubmit, formState: { errors } } = useForm({
-	  resolver: zodResolver(emailSchema),
 	});
   
 	const handleSendOTP = async (data) => {
@@ -99,36 +94,37 @@ return (
 	<SafeAreaView className='flex-1 bg-white flex-row justify-center items-center'>
 		<ScrollView contentContainerStyle={{ flexGrow: 1 }} className='flex'>
 			<View className='flex-1 flex-col p-4 items-center justify-center'>
-				<View className="mt-5 w-full px-6">
-					<Text className="text-[18px] text-[#898989] font-medium">Enter Email</Text>
-					<Controller
-					control={control}
-					name="email"
-					render={({ field: { onChange, value } }) => (
-						<TextInput
-						className="bg-[#cbcbcb]/30 h-[50px] w-full border-[1px] border-[#898989] rounded-[10px] p-3 mt-2"
-						placeholder="Enter your email"
-						keyboardType="email-address"
-						autoCapitalize="none"
-						value={value}
-						onChangeText={onChange}
-						/>
-					)}
-					/>
-					{errors.email && <Text className="text-red-600 mt-1">{errors.email.message}</Text>}
-
-					{!otpVisible && (
-					<TouchableOpacity
-						className="bg-[#898989] h-[40px] w-full rounded-[10px] justify-center mt-5"
-						onPress={handleSubmit(handleSendOTP)}
+				<View>
+					<Formik
+						initialValues={{email : ''}}
+						validationSchema={toFormikValidationSchema(emailSchema)}
+						onSubmit={(values) => {
+							console.log(values)
+							setOtpVisible(true)
+						}}
 					>
-						<Text className="text-center">Send OTP</Text>
-					</TouchableOpacity>
-					)}
-			</View>
+						{({handleSubmit,handleChange, values, errors, touched}) => (
+							<View>
+								<Text className="text-[16px] my-2 text-[#898989] font-pmedium">Enter Email</Text>
+								<TextInput
+									className="bg-[#cbcbcb]/30 h-[40px] border border-[#898989] rounded-lg pl-4"
+									value={values.email}
+									onChangeText={handleChange('email')}
+								/>
+								{errors.email && touched.email && <Text className="text-red-500 mt-1">{errors.email}</Text>}
+								<CustomButton 
+									text="Send OTP"
+									buttonStyle='w-[300px] h-10 flex items-center justify-center rounded-md bg-[#cbcbcb] mt-8'
+									textStyle='text-center text-xl text-black'
+									buttonFunction={handleSubmit}
+								/>
+							</View>
+						)}
+					</Formik>
+				</View>
 
 				<View>
-					{!otpVisible && (
+					{otpVisible && (
 						<View
 							className='items-center'
 						>
@@ -148,27 +144,19 @@ return (
 								/>
 								))}
 							</View>
-
 							{otpErr && (
 								<Text className='text-red-600 my-4'>{otpErr}</Text>
 							)}
-							<TouchableOpacity
-								className='h-[40px] w-[140px] bg-[#898989] rounded-[10px] justify-center mt-[50px]'
-								onPress={handleVerifyOTP}
-							>
-								<Text
-									className='text-center text-black text-[16px] '
-								>Verify OTP</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity
-								className='h-[40px] w-[140px] bg-[#898989] rounded-[10px] justify-center mt-[50px]'
-								onPress={() => setOtpVisible(false)}
-							>
-								<Text
-									className='text-center text-black text-[16px] '
-								>Resend OTP</Text>
-							</TouchableOpacity>
+							<View className="flex gap-4 mt-8">
+								<CustomButton
+									text="Verify OTP"
+									buttonFunction={() => router.push("/forget-password")}
+								/>
+								<CustomButton
+									text="Resend OTP"
+									buttonFunction={() => console.log("Resend OTP")}
+								/>
+							</View>
 						</View>
 					)}
 				</View>

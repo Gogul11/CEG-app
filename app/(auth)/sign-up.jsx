@@ -1,43 +1,17 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'expo-router';
-import { useForm, Controller } from 'react-hook-form'
-import { Link } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
 import axios from 'axios';
 import env from "../env";
 import CustomButton from '../../components/button'
 import { Formik } from 'formik'
 import { signUpFormInitialValues } from '../../constants/formConstants'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
-import { signUpValidationschema } from '../../utils/app3/signInValidation'
+import { signUpValidationschema } from '../../utils/app3/FormValidation'
+
 const SignUp = () => {
 	const router = useRouter();
-	// const[show, setShow] = useState(true)
-	// const[show1, setShow1] = useState(true)
-
-
-	// const signUpschema = z.object({
-	// 	user_name : z.string().min(5, 'User Name must atleast contain 5 characters'),
-	// 	email_id: z.string().email('Invlaid Email'),
-	// 	phone_number : z.string()
-	// 				.length(10, 'Phone number must be exactly 10 characters')
-	// 				.regex(/^\d{10}$/, 'Phone number must contain only digits'),
-	// 	password : z.string().min(8, 'Password Should contain 8 Characters'),
-	// 	cpassword : z.string().min(8, 'Password Should contain 8 Characters')
-	// }).refine(data => data.cpassword === data.password, {
-	// 	message:'The Passwords does\'nt match',
-	// 	path:["cpassword"]
-	// })
-
-
-	// const{control, handleSubmit, formState:{errors}, reset} = useForm({
-	// 	resolver:zodResolver(signUpschema)
-	// })
-
+	
 	const API_URL = env.API_URL;
 	const onSignUp = async (data) => {
 		try{
@@ -55,198 +29,102 @@ const SignUp = () => {
 	}
 
 	const Textstyle = 'text-[16px] my-2 text-[#898989] font-pmedium'
-	const InputStyle = 'bg-[#cbcbcb]/30 h-[40px] border-[1px] border-[#898989] rounded-[10px] pl-4'
+	const InputStyle = 'bg-[#cbcbcb]/30 h-[40px] border border-[#898989] rounded-lg pl-4'
 
 	return (
-		<ScrollView contentContainerStyle={{flexGrow:1}}>
-		<SafeAreaView className='flex-1 flex-row justify-center items-center bg-white'>
-			<View className='flex-1 flex-col justify-center items-center'>
-
-				<Text className='text-black font-psemibold text-[25px]'>
-					SIGN UP
-				</Text>
-
-				<View>
-					<Formik
-						initialValues={signUpFormInitialValues}
-						validationSchema={toFormikValidationSchema(signUpValidationschema)}
-						onSubmit={(values) => {
-							console.log(values)
-						}}
-					>
-						{({handleSubmit, values, handleChange}) => (
-							<View>
+		<KeyboardAvoidingView
+			    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+				contentContainerStyle={{flexGrow : 1}}
+		>
+			<ScrollView contentContainerStyle={{flexGrow:1}}>
+				<SafeAreaView className='flex-1 flex-row justify-center items-center bg-white'>
+					<View className='flex-1 flex-col justify-center items-center'>
+						<Text className='text-black font-psemibold text-[25px]'>
+							SIGN UP
+						</Text>
+						
+						<Formik
+							initialValues={signUpFormInitialValues}
+							validationSchema={toFormikValidationSchema(signUpValidationschema)}
+							onSubmit={(values, {resetForm}) => {
+								console.log(values)
+								resetForm()
+							}}
+						>
+							{({handleSubmit, values, handleChange, errors, touched}) => (
 								<View>
-									<Text className={Textstyle}>Username : </Text>
-									<TextInput
-										className={InputStyle}
-										value={values.user_name}
-										placeholder='Username'
-										onChangeText={handleChange('user_name')}
+									<View>
+										<Text className={Textstyle}>Username : </Text>
+										<TextInput
+											className={InputStyle}
+											value={values.user_name}
+											placeholder='Username'
+											onChangeText={handleChange('user_name')}
+										/>
+										{errors.user_name && touched.user_name && <Text className="text-red-500 mt-1">{errors.user_name}</Text>}
+									</View>
+									<View>
+										<Text className={Textstyle}>Email Id : </Text>
+										<TextInput
+											className={InputStyle}
+											value={values.email_id}
+											placeholder='Email'
+											onChangeText={handleChange('email_id')}
+										/>
+										{errors.email_id && touched.email_id && <Text className="text-red-500 mt-1">{errors.email_id}</Text>}
+									</View>
+									<View>
+										<Text className={Textstyle}>Phone Number : </Text>
+										<TextInput
+											className={InputStyle}
+											value={values.phone_number}
+											placeholder='Phone number'
+											onChangeText={handleChange('phone_number')}
+										/>
+										{errors.phone_number && touched.phone_number && <Text className="text-red-500 mt-1">{errors.phone_number}</Text>}
+									</View>
+									<View>
+										<Text className={Textstyle}>Password : </Text>
+										<TextInput
+											className={InputStyle}
+											value={values.password}
+											placeholder='Password'
+											onChangeText={handleChange('password')}
+										/>
+										{errors.password && touched.password && <Text className="text-red-500 mt-1">{errors.password}</Text>}
+									</View>
+									<View>
+										<Text className={Textstyle}>Confirm Password : </Text>
+										<TextInput
+											className={InputStyle}
+											value={values.cpassword}
+											placeholder='Re-type Password'
+											onChangeText={handleChange('cpassword')}
+										/>
+										{errors.cpassword && touched.cpassword && <Text className="text-red-500 mt-1">{errors.cpassword}</Text>}
+									</View>
+									<CustomButton
+										text='Sign Up'
+										buttonFunction={handleSubmit}
+										buttonStyle='bg-[#898989] h-[40px] w-[300px] justify-center rounded-[10px] mt-8'
+										textStyle='text-center text-xl text-black'
 									/>
 								</View>
-
-								<View>
-									<Text className={Textstyle}>Email Id : </Text>
-									<TextInput
-										className={InputStyle}
-										value={values.email_id}
-										placeholder='Email'
-										onChangeText={handleChange('email_id')}
-									/>
-								</View>
-
-								<View>
-									<Text className={Textstyle}>Phone Number : </Text>
-									<TextInput
-										className={InputStyle}
-										value={values.phone_number}
-										placeholder='Phone number'
-										onChangeText={handleChange('email_id')}
-									/>
-								</View>
-
-								<View>
-									<Text className={Textstyle}>Password : </Text>
-									<TextInput
-										className={InputStyle}
-										value={values.password}
-										placeholder='Password'
-										onChangeText={handleChange('password')}
-									/>
-								</View>
-
-								<View>
-									<Text className={Textstyle}>Confirm Password : </Text>
-									<TextInput
-										className={InputStyle}
-										value={values.cpassword}
-										placeholder='Re-type Password'
-										onChangeText={handleChange('cpassword')}
-									/>
-								</View>
-
-								<CustomButton
-									text='Sign Up'
-									buttonFunction={handleSubmit}
-									buttonStyle='bg-[#898989] h-[40px] w-[300px] justify-center rounded-[10px]'
-									textStyle='text-center text-xl text-black'
-								/>
-							</View>
-						)}
-					</Formik>
-				</View>
-
-				{/* <View className=''>
-					<View>
-						<Text className={Textstyle}>Email Id : </Text>
-						<Controller
-							control={control}
-							name='email_id'
-							render={({ field : {onChange, value}}) => (
-								<TextInput
-									className={InputStyle}
-									onChangeText={onChange}
-									value={value}
-								/>
 							)}
-						/>
-						{errors.email_id && (
-							<Text className='text-red-500 font-light m-2'>{errors.email_id.message}</Text>
-						)}
+						</Formik>
+						<View className='m-2'>
+							<Text className='font-psemibold text-center mt-4 text-black'>
+								Already Signed In ? {'\n'}
+							</Text>
+							<CustomButton
+								text='Sign In'
+								buttonFunction={() => router.push('/sign-in')}
+							/>
+						</View>
 					</View>
-					<View>
-						<Text className={Textstyle}>User Name : </Text>
-						<Controller
-							control={control}
-							name='user_name'
-							render={({ field : {onChange, value}}) => (
-								<TextInput
-									className={InputStyle}
-									onChangeText={onChange}
-									value={value}
-								/>
-							)}
-						/>
-						{errors.user_name && (
-							<Text className='text-red-500 font-light m-2'>{errors.user_name.message}</Text>
-						)}
-					</View>
-					<View>
-						<Text className={Textstyle}>Phone Number : </Text>
-						<Controller
-							control={control}
-							name='phone_number'
-							render={({ field : {onChange, value}}) => (
-								<TextInput
-									className={InputStyle}
-									onChangeText={onChange}
-									value={value}
-								/>
-							)}
-						/>
-						{errors.phone_number && (
-							<Text className='text-red-500 font-light m-2'>{errors.phone_number.message}</Text>
-						)}
-					</View>
-					<View>
-						<Text className={Textstyle}>Password : </Text>
-						<Controller
-							control={control}
-							name='password'
-							render={({ field : {onChange, value}}) => (
-								<TextInput
-									className={InputStyle}
-									onChangeText={onChange}
-									value={value}
-									secureTextEntry={show}
-								/>
-							)}
-						/>
-						{errors.password && (
-							<Text className='text-red-500 font-light m-2'>{errors.password.message}</Text>
-						)}
-					</View>
-					<View>
-						<Text className={Textstyle}>Confirm Password : </Text>
-						<Controller
-							control={control}
-							name='cpassword'
-							render={({ field : {onChange, value}}) => (
-								<TextInput
-									className={InputStyle}
-									onChangeText={onChange}
-									value={value}
-									secureTextEntry={show1}
-								/>
-							)}
-						/>
-						{errors.cpassword && (
-							<Text className='text-red-500 font-light m-2'>{errors.cpassword.message}</Text>
-						)}
-					</View>
-					<View className='flex mt-7 flex-row justify-center items-center'>
-						<CustomButton
-							text='Sign Up'
-							buttonFunction={handleSubmit(onSignUp)}
-							buttonStyle='bg-[#898989] h-[40px] w-[300px] justify-center rounded-[10px]'
-							textStyle='text-center text-xl text-black'
-						/>
-					</View>
-				</View> */}
-
-				<View className=''>
-					<Text className='font-psemibold text-center mt-4 text-black'>
-						Already Signed In ? {'\n'}
-					</Text>
-					<CustomButton
-						text='Sign In'
-						buttonFunction={() => router.push('/sign-in')}
-					/>
-				</View>
-			</View>
-		</SafeAreaView>
-		</ScrollView>
+				</SafeAreaView>
+			</ScrollView>
+		</KeyboardAvoidingView>
 	)
 }
 
