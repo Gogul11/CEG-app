@@ -9,7 +9,7 @@ const Layout = () => {
         <Stack.Screen name="index" options={{headerShown : false}}/>   
         <Stack.Screen name='(app1)' options={{headerShown : false}}/>
         <Stack.Screen name='(app2)'/>
-        <Stack.Screen name='(app3)/(tabs)' options={{headerShown : false}}/>
+        <Stack.Screen name='(app3)' options={{headerShown : false}}/>
         <Stack.Screen name='(auth)' options={{headerShown : false}}/>
         <Stack.Screen name='profile' />
       </Stack>
