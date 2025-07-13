@@ -1,49 +1,42 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import ClubScreen from '../screens/Clubscreens';
 import Announcement from '../screens/AnnouncementsScreen';
 import AboutClubscreen from '../screens/AboutClubsScreen';
-import ClubDetailsScreen from '../screens/ClubDetailsScreen';
-import OpenCallAdmin from '../screens/OpenCallAdmin';
-import OrganisersOpenCall from '../screens/OrganiserOpenCall';
+import Home from '../screens/Home';
+import WelcomePage from '../screens/WelcomePage';
+import EventListScreen from '../screens/EventListScreen';
+import about from '../screens/about';
 
-import DatePickerModal from '../screens/DatePickerModal';
-import OpenCallAdmincopy from '../screens/OpenCallAdmincopy';
-import Home from '../Home';
-import index from '../index';
-import SignUpScreen from '../SignUpScreen';
-import LoginScreen from '../LoginScreen';
-import WelcomePage from '../WelcomePage';
-import EventListScreen from '../EventListScreen';
-import EventDetailsScreen from '../EventDetailsScreen';
-import GeneralCalender from '../GeneralCalender';
-import about from '../about';
+const Tab = createBottomTabNavigator();
 
-const Stack = createNativeStackNavigator();
-
-const AppNavigator = () => {
+const AppNavigator: React.FC = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      <Stack.Screen name="index" component={index} options={{ headerShown: false }} />
-      <Stack.Screen name="about" component={about} options={{ headerShown: false }} />
-      <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />
-      <Stack.Screen name="EventListScreen" component={EventListScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="EventDetailsScreen" component={EventDetailsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="GeneralCalender" component={GeneralCalender} options={{ headerShown: false }} />
-      <Stack.Screen name="Club" component={ClubScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Announcements" component={Announcement} options={{ headerShown: false }} />
-      <Stack.Screen name="About Clubs" component={AboutClubscreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Club Details" component={ClubDetailsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Open Call Admin" component={OpenCallAdmin} options={{ headerShown: false }} />
-      <Stack.Screen name="Open Call Admin copy" component={OpenCallAdmincopy} options={{ headerShown: false }} />
-      <Stack.Screen name="OrganiserOpenCall" component={OrganisersOpenCall} options={{ headerShown: false }} />
-      <Stack.Screen name="DatePickerModal" component={DatePickerModal} options={{ headerShown: false }} />
-    </Stack.Navigator>
-
-  )
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => {
+          let iconName: keyof typeof Ionicons.glyphMap = 'home';
+          if (route.name === 'Home') iconName = 'home';
+          else if (route.name === 'WelcomePage') iconName = 'happy';
+          else if (route.name === 'EventListScreen') iconName = 'calendar';
+          else if (route.name === 'Club') iconName = 'people';
+          else if (route.name === 'Announcements') iconName = 'megaphone';
+          else if (route.name === 'about') iconName = 'information-circle';
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="WelcomePage" component={WelcomePage} />
+      <Tab.Screen name="EventListScreen" component={EventListScreen} />
+      <Tab.Screen name="Club" component={ClubScreen} />
+      <Tab.Screen name="Announcements" component={Announcement} />
+      <Tab.Screen name="about" component={about} />
+    </Tab.Navigator>
+  );
 };
 
 export default AppNavigator;

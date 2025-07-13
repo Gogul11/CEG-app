@@ -5,6 +5,6 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <AppNavigator />
-  </AuthProvider>
+    </AuthProvider>
   );
 }
